@@ -3,8 +3,12 @@ const Schema = mongoose.Schema;
 
 const User = new Schema(
     {
-        name: { type: String, maxLength: 300, required: true },
-        dateOfBirth: { type: Date },
+        username: { type: String, maxLength: 300, required: true },
+        password: {
+            type: String,
+            required: true,
+        },
+        dateOfBirth: { type: Date, default: new Date() },
         address: { type: String, maxLength: 400 },
         cart: { type: String, maxLength: 400 },
     },
