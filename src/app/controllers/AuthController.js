@@ -2,12 +2,15 @@ const UserModel = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     const { username, password } = req.body;
     console.log(username, password);
     const existedUser = await UserModel.findOne({ username });
 
-    if (existedUser) throw new Error("Username existed");
+    if (existedUser) {
+        next(new Error("Username existed"));
+        return;
+    }
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -25,15 +28,21 @@ const register = async (req, res) => {
     });
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     const { username, password } = req.body;
     const existedUser = await UserModel.findOne({ username });
 
-    if (!existedUser) throw new Error("Wrong username or password");
+    if (!existedUser) {
+        next(new Error("Wrong username or password"));
+        return;
+    }
 
     const matched = await bcrypt.compare(password, existedUser.password);
 
-    if (!matched) throw new Error("Wrong username or password");
+    if (!matched) {
+        next(new Error("Wrong username or password"));
+        return;
+    }
 
     const userID = existedUser._id;
 

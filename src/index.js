@@ -7,6 +7,8 @@ const morgan = require("morgan");
 const port = 1108;
 const route = require("./routes");
 
+app.use(cors());
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
@@ -30,6 +32,13 @@ route(app);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
+});
+
+app.use((error, req, res, next) => {
+    res.status(500).send({
+        success: false,
+        message: error.message,
+    });
 });
 
 app.get("*", (req, res) => {
