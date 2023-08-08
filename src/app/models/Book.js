@@ -5,14 +5,13 @@ const Book = new Schema(
     {
         name: { type: String, maxLength: 300, required: true },
         author: { type: String, maxLength: 100, required: true },
-        createAt: { type: Date, default: Date.now() },
         inStock: { type: Number, require: true },
         type: { type: String, required: true },
         price: { type: Number, required: true },
         discount: { type: Number },
         description: { type: String, required: true },
         commonPoint: { type: Number, default: 0 },
-        imageSrc: { type: Array, required: true },
+        imageSrc: { type: Array, required: true, default: [] },
     },
     { timestamps: true }
 );

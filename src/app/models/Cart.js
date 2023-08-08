@@ -3,8 +3,10 @@ const Schema = mongoose.Schema;
 
 const Cart = new Schema(
     {
-        idOwner: { type: String, required: true },
-        dataCart: { type: Array, required: true },
+        idOwner: { type: ObjectId, ref: "User", required: true },
+        dataCart: [
+            { itemId: { type: ObjectId, ref: "Book", required: true }, quantity: { type: Number, required: true } },
+        ],
     },
     { timestamps: true }
 );
