@@ -4,7 +4,10 @@ const jwt = require("jsonwebtoken");
 const needAuthenticated = async (req, res, next) => {
     const token = req.headers.authorization;
 
-    if (!token) throw new Error("Token not found");
+    if (!token) {
+        next(new Error("Token not found"));
+        return;
+    }
 
     const jwtToken = token.split(" ")[1];
 
@@ -12,11 +15,17 @@ const needAuthenticated = async (req, res, next) => {
 
     const { userID } = data;
 
-    if (!userID) throw new Error("User's ID not found");
+    if (!userID) {
+        next(new Error("User's ID not found"));
+        return;
+    }
 
     const existedUser = await UserModel.findById(userID);
 
-    if (!existedUser) throw new Error("User not found");
+    if (!existedUser) {
+        next(new Error("User not found"));
+        return;
+    }
 
     req.user = existedUser;
 
