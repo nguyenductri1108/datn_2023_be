@@ -3,6 +3,8 @@ const router = express.Router();
 
 const BookController = require("../app/controllers/BookController");
 
-router.get("/getBooksByName/:name", BookController.index);
+router.get("/");
+
+router.get("/getBooksByName/:name", BookController.getBookByName);
 
 module.exports = router;
