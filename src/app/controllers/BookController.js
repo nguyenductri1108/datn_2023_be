@@ -1,10 +1,43 @@
 const Book = require("../models/Book");
 
 class BookController {
-  getBookByName(req, res, next) {
-    Book.find({ name: req.params.name })
+  getBooks(req, res, next) {
+    const { name, author, category, limit } = req.query;
+
+    const query = {
+      // $or: [],
+    };
+
+    if (name) {
+      query.$or = [{ name: { $regex: new RegExp(name, "i") } }];
+    }
+
+    if (author) {
+      query.$or = query.$or ?? [];
+      query.$or.push({ author: { $regex: new RegExp(author, "i") } });
+    }
+
+    if (category) {
+      query.$and = [{ type: category }];
+    }
+
+    console.log(query);
+
+    Book.find(query)
+      .limit(limit ? limit : 5)
       .then((books) => {
-        res.json({ books: books });
+        res.send({
+          success: 1,
+          data: books,
+        });
+      })
+      .catch(next);
+  }
+
+  getBookById(req, res, next) {
+    Book.find({ _id: req.params.id })
+      .then((book) => {
+        res.json({ success: 1, data: book });
       })
       .catch(next);
   }
