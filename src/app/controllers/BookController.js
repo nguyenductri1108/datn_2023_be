@@ -9,10 +9,12 @@ class BookController {
             .catch(next);
     }
 
-    getAllBooks(req, res, next) {
+    getCommonBooks(req, res, next) {
         Book.find({})
+            .sort({ commonPoint: -1 })
+            .limit(5)
             .then((books) => {
-                res.json({ books: books });
+                res.json({ success: 1, books: books });
             })
             .catch(next);
     }
