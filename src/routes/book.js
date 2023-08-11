@@ -6,6 +6,7 @@ const needAuthenticated = require("../middlewares/needAuthenticated");
 const checkAdmin = require("../middlewares/checkAdmin");
 
 router.get("/", BookController.getCommonBooks);
+router.post("/filter", BookController.getBookFiltered);
 router.get("/getbooks", BookController.getBooks);
 router.get("/:id", BookController.getBookById);
 router.post("/", needAuthenticated, checkAdmin, BookController.createBook);
